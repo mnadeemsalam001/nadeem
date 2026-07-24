@@ -1,11 +1,14 @@
 import { getUnsyncedEntries, markSynced } from "./db.js";
 import { SYNC_ENDPOINT_URL, SYNC_SECRET, SYNC_TAG } from "./app-config.js";
+import { calculateDailyScore } from "./scoring.js";
+import { SCORE_CONFIG } from "./config.js";
 
 async function postEntry(entry) {
+  const { total, categoryTotals } = calculateDailyScore(entry, SCORE_CONFIG);
   const res = await fetch(SYNC_ENDPOINT_URL, {
     method: "POST",
     headers: { "Content-Type": "text/plain;charset=utf-8" }, // avoids a CORS preflight to Apps Script
-    body: JSON.stringify({ ...entry, secret: SYNC_SECRET }),
+    body: JSON.stringify({ ...entry, secret: SYNC_SECRET, total_score: total, category_scores: categoryTotals }),
   });
   if (!res.ok) throw new Error(`Sync failed: ${res.status}`);
 }

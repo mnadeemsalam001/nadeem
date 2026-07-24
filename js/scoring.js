@@ -8,18 +8,30 @@ import {
   HIFAZAT_FIELDS,
 } from "./config.js";
 
+function sumFields(entry, fields, breakdown, pointsFor) {
+  let subtotal = 0;
+  for (const field of fields) {
+    const points = pointsFor(entry[field]);
+    breakdown[field] = points;
+    subtotal += points;
+  }
+  return subtotal;
+}
+
 // Pure function: same entry + config always produces the same score.
-// No hardcoded point values here - they all come from config.
+// No hardcoded point values here - they all come from config. categoryTotals
+// groups the per-field breakdown into the sections shown on the entry screen,
+// so a "Scores" sheet can chart contribution-by-category over time.
 export function calculateDailyScore(entry, config) {
   const breakdown = {};
-  let total = 0;
+  const categoryTotals = {};
 
-  for (const prayer of PRAYERS) {
-    const tier = entry[`${prayer}_tier`];
-    const points = config.prayerTiers[tier] ?? 0;
-    breakdown[`${prayer}_tier`] = points;
-    total += points;
-  }
+  categoryTotals.prayers = sumFields(
+    entry,
+    PRAYERS.map((p) => `${p}_tier`),
+    breakdown,
+    (tier) => config.prayerTiers[tier] ?? 0
+  );
 
   const pages = entry.quran_pages ?? 0;
   let quranPoints;
@@ -34,44 +46,39 @@ export function calculateDailyScore(entry, config) {
     quranPoints = 0;
   }
   breakdown.quran_pages = quranPoints;
-  total += quranPoints;
+  categoryTotals.quran = quranPoints;
 
-  for (const field of AZKHAR_COUNT_FIELDS) {
-    const count = entry[field] ?? 0;
-    const points = count * config.azkharCount.perCountPoints + config.azkharCount.offset;
-    breakdown[field] = points;
-    total += points;
-  }
+  categoryTotals.azkhar_counts = sumFields(
+    entry, AZKHAR_COUNT_FIELDS, breakdown,
+    (count) => (count ?? 0) * config.azkharCount.perCountPoints + config.azkharCount.offset
+  );
 
-  for (const field of TASBEEHAT_SESSION_FIELDS) {
-    const points = entry[field] ? config.tasbeehatSession.donePoints : config.tasbeehatSession.missedPoints;
-    breakdown[field] = points;
-    total += points;
-  }
+  categoryTotals.tasbeehat = sumFields(
+    entry, TASBEEHAT_SESSION_FIELDS, breakdown,
+    (done) => (done ? config.tasbeehatSession.donePoints : config.tasbeehatSession.missedPoints)
+  );
 
-  for (const field of SURAH_FIELDS) {
-    const points = entry[field] ? config.surah.donePoints : config.surah.missedPoints;
-    breakdown[field] = points;
-    total += points;
-  }
+  categoryTotals.surahs = sumFields(
+    entry, SURAH_FIELDS, breakdown,
+    (done) => (done ? config.surah.donePoints : config.surah.missedPoints)
+  );
 
-  for (const field of NAWAFIL_FIELDS) {
-    const points = entry[field] ? config.nawafil.donePoints : config.nawafil.missedPoints;
-    breakdown[field] = points;
-    total += points;
-  }
+  categoryTotals.nawafil = sumFields(
+    entry, NAWAFIL_FIELDS, breakdown,
+    (done) => (done ? config.nawafil.donePoints : config.nawafil.missedPoints)
+  );
 
-  for (const field of ZIKR_FIELDS) {
-    const points = entry[field] ? config.zikr.donePoints : config.zikr.missedPoints;
-    breakdown[field] = points;
-    total += points;
-  }
+  categoryTotals.zikr = sumFields(
+    entry, ZIKR_FIELDS, breakdown,
+    (done) => (done ? config.zikr.donePoints : config.zikr.missedPoints)
+  );
 
-  for (const field of HIFAZAT_FIELDS) {
-    const points = entry[field] ? config.hifazat.donePoints : config.hifazat.missedPoints;
-    breakdown[field] = points;
-    total += points;
-  }
+  categoryTotals.hifazat = sumFields(
+    entry, HIFAZAT_FIELDS, breakdown,
+    (done) => (done ? config.hifazat.donePoints : config.hifazat.missedPoints)
+  );
 
-  return { total, breakdown };
+  const total = Object.values(categoryTotals).reduce((sum, n) => sum + n, 0);
+
+  return { total, breakdown, categoryTotals };
 }
