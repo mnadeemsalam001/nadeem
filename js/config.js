@@ -1,6 +1,62 @@
 // Mirrors the Score_Config sheet: every point value and field default lives here,
 // so rule changes (Nadeem: "more items will be added later") mean editing this file only.
 
+// Virtue (sawab) values, separate from SCORE_CONFIG's motivational point scale.
+// Virtue and sin are summed as two SEPARATE totals, never netted against each other -
+// see js/virtue.js. Only prayer tier 1 (Qaza) and Hifazat "not protected" carry a sin
+// value; everything else is 0 when missed (no sin tracked, just no reward).
+export const VIRTUE_CONFIG = {
+  prayerTiers: {
+    1: -100000,               // Qaza (sin)
+    2: 700,                   // missed jamaat (prayed alone)
+    3: 700 * 27,              // Jamaat only
+    4: 700 * 27 * 70,         // Jamaat + 1/3
+    5: 700 * 27 * 70 * 70,    // Jamaat + 2/3
+    6: 700 * 27 * 70 * 70 * 70, // Full Jamaat (3/3)
+    7: 7000 * 27 * 70,        // Imamat + 1/3
+    8: 7000 * 27 * 70 * 70,   // Imamat + 2/3
+    9: 7000 * 27 * 70 * 70 * 70, // Full Imamat (3/3)
+  },
+  quranPerPage: 525 * 10, // ~525 letters/page assumed, 10 reward per letter
+  azkharCount: {
+    tasbeeh_fatima_count: 1000,
+    surah_duha_count: 6000,
+    ya_latif_count: 500,
+    muawwidhatain_count: 2900,
+  },
+  tasbeehatSession: {
+    istighfar_am: 10000, istighfar_pm: 10000,
+    durood_am: 10000, durood_pm: 10000,
+    kalima3_am: 10000, kalima3_pm: 10000,
+    kalima1_am: 10000, kalima1_pm: 10000,
+  },
+  surah: {
+    surah_yaseen: 3620 * 10,
+    surah_waqiah: 1900 * 10,
+    surah_mulk: 1665 * 10,
+    surah_sajdah: 1860 * 10,
+  },
+  nawafil: {
+    tahajjud: 200,
+    ishraq: 100,
+    chasht: 100,
+    awabin: 100,
+  },
+  zikr: {
+    zikr_subah: 50,
+    zikr_shaam: 50,
+    zikr_bil_jahr: 100,
+    munajat_faqeer: 50,
+  },
+  // "done" here means protected: 0 (no separate reward for protecting, just no sin).
+  // Not protected uses this value as a sin amount.
+  hifazat: {
+    hifazat_tongue: -50000,
+    hifazat_ears: -50000,
+    hifazat_eyes: -100000,
+  },
+};
+
 export const SCORE_CONFIG = {
   prayerTiers: {
     1: -20, // Qaza

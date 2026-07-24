@@ -1,7 +1,7 @@
 import { trySyncAll } from "./js/sync.js";
 import { SYNC_TAG } from "./js/app-config.js";
 
-const CACHE_NAME = "naiki-tracker-v3";
+const CACHE_NAME = "naiki-tracker-v4";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -10,6 +10,7 @@ const APP_SHELL = [
   "./js/app.js",
   "./js/config.js",
   "./js/scoring.js",
+  "./js/virtue.js",
   "./js/db.js",
   "./js/sync.js",
   "./js/app-config.js",
