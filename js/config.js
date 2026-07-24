@@ -3,11 +3,15 @@
 
 export const SCORE_CONFIG = {
   prayerTiers: {
-    1: 20,   // Imamat
-    2: 15,   // full ideal
-    3: 7,    // default
-    4: -15,  // missed jamaat
-    5: -20,  // Qaza
+    1: -20, // Qaza
+    2: -15, // missed jamaat
+    3: 7,   // Jamaat only (default)
+    4: 9,   // Jamaat + 1/3
+    5: 12,  // Jamaat + 2/3
+    6: 15,  // Full Jamaat (3/3)
+    7: 18,  // Imamat + 1/3
+    8: 21,  // Imamat + 2/3
+    9: 25,  // Full Imamat (3/3)
   },
   quran: {
     fullPages: 5,
@@ -75,7 +79,7 @@ export const FIELD_SCHEMA = [
   { group: "Prayers", key: "maghrib_tier", label: "Maghrib", type: "tier", default: 3 },
   { group: "Prayers", key: "isha_tier", label: "Isha", type: "tier", default: 3 },
 
-  { group: "Quran", key: "quran_pages", label: "Quran pages read", type: "int", default: 0, min: 0 },
+  { group: "Quran", key: "quran_pages", label: "Quran pages read", type: "int", default: 5, min: 0 },
 
   { group: "Azkhar (counts, 0-5)", key: "tasbeeh_fatima_count", label: "Tasbeeh Fatima", type: "count", default: 5, min: 0, max: 5 },
   { group: "Azkhar (counts, 0-5)", key: "surah_duha_count", label: "Surah Duha", type: "count", default: 5, min: 0, max: 5 },
@@ -97,10 +101,10 @@ export const FIELD_SCHEMA = [
   { group: "Surahs", key: "surah_mulk", label: "Surah Mulk", type: "bool", default: 1 },
   { group: "Surahs", key: "surah_sajdah", label: "Surah Sajdah", type: "bool", default: 1 },
 
-  { group: "Nawafil (extra, default off)", key: "tahajjud", label: "Tahajjud", type: "bool", default: 0 },
-  { group: "Nawafil (extra, default off)", key: "ishraq", label: "Ishraq", type: "bool", default: 0 },
-  { group: "Nawafil (extra, default off)", key: "chasht", label: "Chasht", type: "bool", default: 0 },
-  { group: "Nawafil (extra, default off)", key: "awabin", label: "Awabin", type: "bool", default: 0 },
+  { group: "Nawafil", key: "tahajjud", label: "Tahajjud", type: "bool", default: 1 },
+  { group: "Nawafil", key: "ishraq", label: "Ishraq", type: "bool", default: 1 },
+  { group: "Nawafil", key: "chasht", label: "Chasht", type: "bool", default: 1 },
+  { group: "Nawafil", key: "awabin", label: "Awabin", type: "bool", default: 1 },
 
   { group: "Zikr", key: "zikr_subah", label: "Zikr Subah", type: "bool", default: 1 },
   { group: "Zikr", key: "zikr_shaam", label: "Zikr Shaam", type: "bool", default: 1 },

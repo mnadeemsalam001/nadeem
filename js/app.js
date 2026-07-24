@@ -4,12 +4,18 @@ import { getEntry, saveEntry } from "./db.js";
 import { trySyncAll, requestBackgroundSync } from "./sync.js";
 
 const TIER_LABELS = {
-  1: "1 - Imamat",
-  2: "2 - Full jamaat",
-  3: "3 - Default",
-  4: "4 - Missed jamaat",
-  5: "5 - Qaza",
+  1: "1 - Qaza",
+  2: "2 - Missed jamaat",
+  3: "3 - Jamaat only",
+  4: "4 - Jamaat + 1/3",
+  5: "5 - Jamaat + 2/3",
+  6: "6 - Full Jamaat (3/3)",
+  7: "7 - Imamat + 1/3",
+  8: "8 - Imamat + 2/3",
+  9: "9 - Full Imamat (3/3)",
 };
+
+const TIER_VALUES = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 const datePicker = document.getElementById("date-picker");
 const app = document.getElementById("app");
@@ -36,7 +42,7 @@ function fieldRow(field, value, onChange) {
   if (field.type === "tier") {
     const select = document.createElement("select");
     select.className = "tier-select";
-    for (const tier of [1, 2, 3, 4, 5]) {
+    for (const tier of TIER_VALUES) {
       const opt = document.createElement("option");
       opt.value = tier;
       opt.textContent = TIER_LABELS[tier];
