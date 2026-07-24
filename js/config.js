@@ -183,6 +183,14 @@ export const FIELD_SCHEMA = [
   { group: "Hifazat", key: "hifazat_eyes", label: "Eyes", type: "bool", default: 1 },
 ];
 
+// Distinguishes "no data for this field" (undefined/null/blank - e.g. a historical row
+// backfilled before this field existed) from "explicitly marked not done" (0/false).
+// Used by scoring.js/virtue.js so newly-added fields don't retroactively penalize old
+// entries that predate them.
+export function isFieldPresent(value) {
+  return value !== undefined && value !== null && value !== "";
+}
+
 export function buildDefaultEntry() {
   const entry = {};
   for (const field of FIELD_SCHEMA) {

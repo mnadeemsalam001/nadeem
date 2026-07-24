@@ -6,12 +6,16 @@ import {
   NAWAFIL_FIELDS,
   ZIKR_FIELDS,
   HIFAZAT_FIELDS,
+  isFieldPresent,
 } from "./config.js";
 
+// A field with no data at all (e.g. a historical row from before it existed) scores 0,
+// not the "missed" penalty - only an explicit 0/false counts as missed.
 function sumFields(entry, fields, breakdown, pointsFor) {
   let subtotal = 0;
   for (const field of fields) {
-    const points = pointsFor(entry[field]);
+    const raw = entry[field];
+    const points = isFieldPresent(raw) ? pointsFor(raw) : 0;
     breakdown[field] = points;
     subtotal += points;
   }
@@ -33,24 +37,24 @@ export function calculateDailyScore(entry, config) {
     (tier) => config.prayerTiers[tier] ?? 0
   );
 
-  const pages = entry.quran_pages ?? 0;
-  let quranPoints;
-  if (pages === 0) {
-    quranPoints = config.quran.zeroPagesPoints;
-  } else if (pages >= config.quran.fullPages) {
-    quranPoints = config.quran.fullPagesPoints;
-    if (pages > config.quran.fullPages) {
-      quranPoints += config.quran.perExtraPagePoints * (pages - config.quran.fullPages);
+  let quranPoints = 0;
+  if (isFieldPresent(entry.quran_pages)) {
+    const pages = entry.quran_pages;
+    if (pages === 0) {
+      quranPoints = config.quran.zeroPagesPoints;
+    } else if (pages >= config.quran.fullPages) {
+      quranPoints = config.quran.fullPagesPoints;
+      if (pages > config.quran.fullPages) {
+        quranPoints += config.quran.perExtraPagePoints * (pages - config.quran.fullPages);
+      }
     }
-  } else {
-    quranPoints = 0;
   }
   breakdown.quran_pages = quranPoints;
   categoryTotals.quran = quranPoints;
 
   categoryTotals.azkhar_counts = sumFields(
     entry, AZKHAR_COUNT_FIELDS, breakdown,
-    (count) => (count ?? 0) * config.azkharCount.perCountPoints + config.azkharCount.offset
+    (count) => count * config.azkharCount.perCountPoints + config.azkharCount.offset
   );
 
   categoryTotals.tasbeehat = sumFields(
