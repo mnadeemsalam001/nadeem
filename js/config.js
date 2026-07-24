@@ -23,12 +23,15 @@ export const VIRTUE_CONFIG = {
     surah_duha_count: 6000,
     ya_latif_count: 500,
     muawwidhatain_count: 2900,
+    dua_after_namaz_count: 0, // can't be measured, per Nadeem
   },
   tasbeehatSession: {
     istighfar_am: 10000, istighfar_pm: 10000,
     durood_am: 10000, durood_pm: 10000,
     kalima3_am: 10000, kalima3_pm: 10000,
     kalima1_am: 10000, kalima1_pm: 10000,
+    la_hawla_am: 10000, la_hawla_pm: 10000,
+    subhanallah_am: 10000, subhanallah_pm: 10000,
   },
   surah: {
     surah_yaseen: 3620 * 10,
@@ -110,6 +113,7 @@ export const AZKHAR_COUNT_FIELDS = [
   "surah_duha_count",
   "ya_latif_count",
   "muawwidhatain_count",
+  "dua_after_namaz_count",
 ];
 
 export const TASBEEHAT_SESSION_FIELDS = [
@@ -117,6 +121,8 @@ export const TASBEEHAT_SESSION_FIELDS = [
   "durood_am", "durood_pm",
   "kalima3_am", "kalima3_pm",
   "kalima1_am", "kalima1_pm",
+  "la_hawla_am", "la_hawla_pm",
+  "subhanallah_am", "subhanallah_pm",
 ];
 
 export const SURAH_FIELDS = ["surah_yaseen", "surah_waqiah", "surah_mulk", "surah_sajdah"];
@@ -141,16 +147,21 @@ export const FIELD_SCHEMA = [
   { group: "Azkhar (counts, 0-5)", key: "surah_duha_count", label: "Surah Duha", type: "count", default: 5, min: 0, max: 5 },
   { group: "Azkhar (counts, 0-5)", key: "ya_latif_count", label: "Ya Latif", type: "count", default: 5, min: 0, max: 5 },
   { group: "Azkhar (counts, 0-5)", key: "muawwidhatain_count", label: "Muawwidhatain", type: "count", default: 5, min: 0, max: 5 },
+  { group: "Azkhar (counts, 0-5)", key: "dua_after_namaz_count", label: "Dua After Namaz", type: "count", default: 5, min: 0, max: 5 },
 
   { group: "Morning Tasbeehat", key: "istighfar_am", label: "Istighfar (300)", type: "bool", default: 1 },
   { group: "Morning Tasbeehat", key: "durood_am", label: "Durood Shareef (300)", type: "bool", default: 1 },
   { group: "Morning Tasbeehat", key: "kalima3_am", label: "3rd Kalima (300)", type: "bool", default: 1 },
   { group: "Morning Tasbeehat", key: "kalima1_am", label: "1st Kalima (300)", type: "bool", default: 1 },
+  { group: "Morning Tasbeehat", key: "la_hawla_am", label: "La Hawla Wala Quwwata", type: "bool", default: 1 },
+  { group: "Morning Tasbeehat", key: "subhanallah_am", label: "Subhanallahi wa Bihamdihi", type: "bool", default: 1 },
 
   { group: "Evening Tasbeehat", key: "istighfar_pm", label: "Istighfar (300)", type: "bool", default: 1 },
   { group: "Evening Tasbeehat", key: "durood_pm", label: "Durood Shareef (300)", type: "bool", default: 1 },
   { group: "Evening Tasbeehat", key: "kalima3_pm", label: "3rd Kalima (300)", type: "bool", default: 1 },
   { group: "Evening Tasbeehat", key: "kalima1_pm", label: "1st Kalima (300)", type: "bool", default: 1 },
+  { group: "Evening Tasbeehat", key: "la_hawla_pm", label: "La Hawla Wala Quwwata", type: "bool", default: 1 },
+  { group: "Evening Tasbeehat", key: "subhanallah_pm", label: "Subhanallahi wa Bihamdihi", type: "bool", default: 1 },
 
   { group: "Surahs", key: "surah_yaseen", label: "Surah Yaseen", type: "bool", default: 1 },
   { group: "Surahs", key: "surah_waqiah", label: "Surah Waqiah", type: "bool", default: 1 },
