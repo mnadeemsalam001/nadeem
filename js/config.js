@@ -181,6 +181,27 @@ export const FIELD_SCHEMA = [
   { group: "Hifazat", key: "hifazat_tongue", label: "Tongue", type: "bool", default: 1 },
   { group: "Hifazat", key: "hifazat_ears", label: "Ears", type: "bool", default: 1 },
   { group: "Hifazat", key: "hifazat_eyes", label: "Eyes", type: "bool", default: 1 },
+
+  // Extra azkhar with no score/virtue impact at all (see EXTRA_FIELDS below) - tracked
+  // for the record only, missing them carries no penalty of any kind.
+  { group: "Extra Azkhar (no score/virtue)", key: "ya_wahhab", label: "Ya Wahhab", type: "bool", default: 0 },
+  { group: "Extra Azkhar (no score/virtue)", key: "falillahil_hamd", label: "Falillahil Hamd Rabbi", type: "bool", default: 0 },
+  { group: "Extra Azkhar (no score/virtue)", key: "surah_duha_11x", label: "Surah Duha (11x)", type: "bool", default: 0 },
+  { group: "Extra Azkhar (no score/virtue)", key: "wa_iz_yarfa_ibrahim", label: "Wa Iz Yarfa Ibrahim (40x)", type: "bool", default: 0 },
+  { group: "Extra Azkhar (no score/virtue)", key: "surah_qadr", label: "Surah Qadr (11x)", type: "bool", default: 0 },
+  { group: "Extra Azkhar (no score/virtue)", key: "surah_fatir_last_ruku", label: "Surah Fatir (Last Ruku)", type: "bool", default: 0 },
+  { group: "Extra Azkhar (no score/virtue)", key: "allahu_latif_count", label: "Allahu Latifun Bi'ibadihi (70x)", type: "count", default: 0, min: 0, max: 2 },
+  { group: "Extra Azkhar (no score/virtue)", key: "rabbi_adkhilni_count", label: "Rabbi Adkhilni Mudkhala (21x)", type: "count", default: 0, min: 0, max: 2 },
+];
+
+// Deliberately NOT included in PRAYERS/AZKHAR_COUNT_FIELDS/etc. above - scoring.js and
+// virtue.js only iterate those arrays, so anything not listed there contributes 0 to
+// both score and virtue, by omission rather than a special case. This array exists
+// purely so Code.gs and anyone reading this file knows these fields exist and why
+// they're excluded, not because any code loops over it.
+export const EXTRA_FIELDS = [
+  "ya_wahhab", "falillahil_hamd", "surah_duha_11x", "wa_iz_yarfa_ibrahim",
+  "surah_qadr", "surah_fatir_last_ruku", "allahu_latif_count", "rabbi_adkhilni_count",
 ];
 
 // Distinguishes "no data for this field" (undefined/null/blank - e.g. a historical row
