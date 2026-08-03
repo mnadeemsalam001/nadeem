@@ -139,7 +139,14 @@ function renderForm(entry) {
 
 async function loadDate(date) {
   const existing = await getEntry(date);
-  currentEntry = existing || { ...buildDefaultEntry(), date, entry_id: null, submitted_at: null, synced: false };
+  // Merge defaults UNDER existing data, not existing-or-defaults: a locally-cached
+  // entry from before a field existed is missing that key entirely, and without this
+  // merge it'd stay missing (silently neutral-scored) instead of getting its real
+  // default - which matters a lot for fields like ayaat_memorized where the default
+  // itself carries a deliberate penalty.
+  currentEntry = existing
+    ? { ...buildDefaultEntry(), ...existing }
+    : { ...buildDefaultEntry(), date, entry_id: null, submitted_at: null, synced: false };
   renderForm(currentEntry);
   statusLine.textContent = currentEntry.submitted_at
     ? `Submitted at ${new Date(currentEntry.submitted_at).toLocaleTimeString()}`
