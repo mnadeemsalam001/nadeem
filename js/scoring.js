@@ -37,6 +37,15 @@ export function calculateDailyScore(entry, config) {
     (tier) => config.prayerTiers[tier] ?? 0
   );
 
+  let sunnatPoints = 0;
+  if (isFieldPresent(entry.sunnat_count)) {
+    const done = entry.sunnat_count;
+    const missed = config.sunnat.totalCount - done;
+    sunnatPoints = done * config.sunnat.donePointsPerUnit + missed * config.sunnat.missedPointsPerUnit;
+  }
+  breakdown.sunnat_count = sunnatPoints;
+  categoryTotals.prayers += sunnatPoints;
+
   let quranPoints = 0;
   if (isFieldPresent(entry.quran_pages)) {
     const pages = entry.quran_pages;
@@ -50,7 +59,15 @@ export function calculateDailyScore(entry, config) {
     }
   }
   breakdown.quran_pages = quranPoints;
-  categoryTotals.quran = quranPoints;
+
+  let ayaatPoints = 0;
+  if (isFieldPresent(entry.ayaat_memorized)) {
+    const ayaat = entry.ayaat_memorized;
+    ayaatPoints = ayaat === 0 ? config.ayaatMemorized.zeroAyaatPoints : ayaat * config.ayaatMemorized.perAyatPoints;
+  }
+  breakdown.ayaat_memorized = ayaatPoints;
+
+  categoryTotals.quran = quranPoints + ayaatPoints;
 
   categoryTotals.azkhar_counts = sumFields(
     entry, AZKHAR_COUNT_FIELDS, breakdown,

@@ -78,6 +78,19 @@ export const SCORE_CONFIG = {
     zeroPagesPoints: -15,
     perExtraPagePoints: 5,
   },
+  // Ayaat memorized (Hifz): every ayat is worth the same +3, no threshold/bonus
+  // structure like quran.pages above - except 0 ayaat is an explicit -15, not just 0.
+  ayaatMemorized: {
+    perAyatPoints: 3,
+    zeroAyaatPoints: -15,
+  },
+  // 12 Sunnat as a single 0-12 count, not 12 separate toggles. Each offered = +2, each
+  // missed = -6 (asymmetric, same spirit as the prayer tiers' reward/penalty split).
+  sunnat: {
+    totalCount: 12,
+    donePointsPerUnit: 2,
+    missedPointsPerUnit: -6,
+  },
   azkharCount: {
     perCountPoints: 3,
     offset: -5,
@@ -129,7 +142,7 @@ export const SURAH_FIELDS = ["surah_yaseen", "surah_waqiah", "surah_mulk", "sura
 
 export const NAWAFIL_FIELDS = ["tahajjud", "ishraq", "chasht", "awabin"];
 
-export const ZIKR_FIELDS = ["zikr_subah", "zikr_shaam", "zikr_bil_jahr", "munajat_faqeer"];
+export const ZIKR_FIELDS = ["zikr_subah", "zikr_shaam", "zikr_bil_jahr", "munajat_faqeer", "manzil"];
 
 export const HIFAZAT_FIELDS = ["hifazat_tongue", "hifazat_ears", "hifazat_eyes"];
 
@@ -140,8 +153,10 @@ export const FIELD_SCHEMA = [
   { group: "Prayers", key: "asr_tier", label: "Asr", type: "tier", default: 3 },
   { group: "Prayers", key: "maghrib_tier", label: "Maghrib", type: "tier", default: 3 },
   { group: "Prayers", key: "isha_tier", label: "Isha", type: "tier", default: 3 },
+  { group: "Prayers", key: "sunnat_count", label: "12 Sunnat", type: "count", default: 12, min: 0, max: 12 },
 
   { group: "Quran", key: "quran_pages", label: "Quran pages read", type: "int", default: 5, min: 0 },
+  { group: "Quran", key: "ayaat_memorized", label: "Ayaat Memorized (Hifz)", type: "int", default: 0, min: 0 },
 
   { group: "Azkhar (counts, 0-5)", key: "tasbeeh_fatima_count", label: "Tasbeeh Fatima", type: "count", default: 5, min: 0, max: 5 },
   { group: "Azkhar (counts, 0-5)", key: "surah_duha_count", label: "Surah Duha", type: "count", default: 5, min: 0, max: 5 },
@@ -177,6 +192,7 @@ export const FIELD_SCHEMA = [
   { group: "Zikr", key: "zikr_shaam", label: "Zikr Shaam", type: "bool", default: 0 },
   { group: "Zikr", key: "zikr_bil_jahr", label: "Zikr Bil Jahr", type: "bool", default: 0 },
   { group: "Zikr", key: "munajat_faqeer", label: "Munajat Faqeer", type: "bool", default: 0 },
+  { group: "Zikr", key: "manzil", label: "Manzil", type: "bool", default: 0 },
 
   { group: "Hifazat", key: "hifazat_tongue", label: "Tongue", type: "bool", default: 1 },
   { group: "Hifazat", key: "hifazat_ears", label: "Ears", type: "bool", default: 1 },
